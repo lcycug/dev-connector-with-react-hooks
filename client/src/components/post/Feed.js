@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { createPost } from "../../actions/postActions";
+import { createPost, getPosts } from "../../actions/postActions";
 import { getCurrentProfile } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import Posts from "./Posts";
+import PostList from "./PostList";
 
 class Feed extends Component {
   constructor(props) {
@@ -17,9 +18,8 @@ class Feed extends Component {
       text: "",
       errors: {}
     };
-    if (this.props.profile === null) {
-      this.props.getCurrentProfile();
-    }
+    this.props.getCurrentProfile();
+    this.props.getPosts();
   }
   componentWillReceiveProps(nextProps) {
     this.setState({ text: "" });
@@ -88,7 +88,8 @@ class Feed extends Component {
                     </div>
                   </div>
                 </div>
-                <Posts />
+                <PostList/>
+                {/* <Posts /> */}
               </div>
             </div>
           </div>
@@ -101,7 +102,8 @@ class Feed extends Component {
 Feed.propTypes = {
   errors: PropTypes.object.isRequired,
   createPost: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired
+  getCurrentProfile: PropTypes.func.isRequired,
+  getPosts: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -111,5 +113,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPost, getCurrentProfile }
+  { createPost, getCurrentProfile, getPosts }
 )(Feed);
