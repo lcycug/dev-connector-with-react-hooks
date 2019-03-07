@@ -20,8 +20,8 @@ import HandleExperience from "./components/dashboard/HandleExperience";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profiles/Profile";
 import Feed from "./components/post/Feed";
-import Comment from "./components/post/Comment";
 import "./App.css";
+import CommentBox from "./components/post/CommentBox";
 if (localStorage.getItem("jwtToken")) {
   const token = localStorage.getItem("jwtToken");
   // Set axios defaults headers
@@ -84,7 +84,7 @@ class App extends Component {
             component={HandleExperience}
           />
           <PrivateRoute exact path="/feed" component={Feed} />
-          <PrivateRoute path="/feed/post" component={Comment} />
+          <PrivateRoute path="/feed/post" component={CommentBox} />
         </Switch>
         <Footers />
       </>
