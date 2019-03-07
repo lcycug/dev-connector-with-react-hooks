@@ -4,23 +4,27 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-import { getPosts, likePost, deletePost } from "../../actions/postActions";
+import { likePost, deletePost } from "../../actions/postActions";
 import Spinner from "../common/Spinner";
 
 const PostList = props => {
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState({});
   const [postable, setPostable] = useState(false);
+
   useEffect(() => {
-    if (props.profile && props.profile.profile) {
-      setProfile(props.profile.profile);
-      if (props.profile.profile.handle) {
-        setPostable(true);
-      }
-    }
-    if (props.post && props.post.posts) {
-      setPosts(props.post.posts);
-    }
+    props.profile && props.profile.profile && setProfile(props.profile.profile);
+  });
+
+  useEffect(() => {
+    props.post && props.post.posts && setPosts(props.post.posts);
+  });
+
+  useEffect(() => {
+    props.profile &&
+      props.profile.profile &&
+      props.profile.profile.handle &&
+      setPostable(true);
   });
 
   const handleClick = event => {
@@ -120,7 +124,6 @@ const PostList = props => {
 PostList.propTypes = {
   post: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  getPosts: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired
 };
@@ -132,5 +135,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPosts, likePost, deletePost }
+  { likePost, deletePost }
 )(PostList);

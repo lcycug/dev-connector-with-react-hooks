@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { createPost, getPosts } from "../../actions/postActions";
 import { getCurrentProfile } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
-import Posts from "./Posts";
 import PostList from "./PostList";
 
 class Feed extends Component {
@@ -88,8 +87,7 @@ class Feed extends Component {
                     </div>
                   </div>
                 </div>
-                <PostList/>
-                {/* <Posts /> */}
+                <PostList />
               </div>
             </div>
           </div>
