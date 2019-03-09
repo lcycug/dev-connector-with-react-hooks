@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import NProgress from "nprogress";
@@ -10,7 +10,6 @@ import store from "./components/store";
 import setAuthToken from "./utils/setAuthToken";
 
 import Navbars from "./components/layout/Navbars";
-import LandingPage from "./components/layout/LandingPage";
 import Footers from "./components/layout/Footers";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
@@ -22,6 +21,8 @@ import Profile from "./components/profiles/Profile";
 import Feed from "./components/post/Feed";
 import "./App.css";
 import CommentBox from "./components/post/CommentBox";
+import Landing from "./components/layout/Landing";
+
 if (localStorage.getItem("jwtToken")) {
   const token = localStorage.getItem("jwtToken");
   // Set axios defaults headers
@@ -41,55 +42,52 @@ if (localStorage.getItem("jwtToken")) {
 
 NProgress.configure({ showSpinner: false });
 
-class App extends Component {
-  componentWillUpdate(nextProps) {
-    if (this.props.location !== nextProps.location) {
-      NProgress.start();
-    }
-  }
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      NProgress.done();
-    }
-  }
-  render() {
-    return (
-      <>
-        <Navbars />
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/profiles" component={Profiles} />
-          <Route path="/profile" component={Profile} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          <PrivateRoute
-            exact
-            path="/dashboard/create-new-profile"
-            component={CreateProfile}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/edit-profile"
-            component={CreateProfile}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/add-experience"
-            component={HandleExperience}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/add-education"
-            component={HandleExperience}
-          />
-          <PrivateRoute exact path="/feed" component={Feed} />
-          <PrivateRoute path="/feed/post" component={CommentBox} />
-        </Switch>
-        <Footers />
-      </>
-    );
-  }
+function App(props) {
+  const [pathname, setPathname] = useState("/");
+  useEffect(() => {
+    setPathname(props.location.pathname);
+  });
+  useEffect(() => {
+    NProgress.start();
+    NProgress.done();
+  }, [pathname]);
+
+  return (
+    <>
+      <Navbars />
+      <Switch>
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/profiles" component={Profiles} />
+        <Route path="/profile" component={Profile} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <PrivateRoute
+          exact
+          path="/dashboard/create-new-profile"
+          component={CreateProfile}
+        />
+        <PrivateRoute
+          exact
+          path="/dashboard/edit-profile"
+          component={CreateProfile}
+        />
+        <PrivateRoute
+          exact
+          path="/dashboard/add-experience"
+          component={HandleExperience}
+        />
+        <PrivateRoute
+          exact
+          path="/dashboard/add-education"
+          component={HandleExperience}
+        />
+        <PrivateRoute exact path="/feed" component={Feed} />
+        <PrivateRoute path="/feed/post" component={CommentBox} />
+      </Switch>
+      <Footers />
+    </>
+  );
 }
 
 export default withRouter(App);
